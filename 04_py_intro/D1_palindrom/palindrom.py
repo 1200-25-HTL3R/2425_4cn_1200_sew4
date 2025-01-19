@@ -61,6 +61,9 @@ def to_base(number: int, base: int) -> str:
         >>> to_base(255,2)
         '11111111'
     """
+    if base > 36:
+        raise Exception("base must be <= 36")
+
     out: str = ""
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     while number > 0:
@@ -69,6 +72,21 @@ def to_base(number: int, base: int) -> str:
         number = int((number - digit) / base)
 
     return out[::-1]
+
+def get_dec_hex_palindrom(x: int) -> int:
+    """
+        :param x: value the output must be smaller than
+        :return: largest number that is a palindrom in hex and dec
+        >>> get_dec_hex_palindrom(1)
+        0
+        >>> get_dec_hex_palindrom(10000)
+        3003
+    """
+    for n in range(x-1, -1, -1):
+        if is_palindrom(str(n)) and is_palindrom(to_base(n, 16)):
+            return n
+    
+    return -1
 
 if __name__ == "__main__":
     import doctest
