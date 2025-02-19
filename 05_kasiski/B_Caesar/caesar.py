@@ -7,6 +7,5 @@ def to_lowercase_letter_only(plaintext: str) -> str:
     'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstaben
     ausdembereichazsind'
     """
-
     letters = "abcdefghijklmnopqrstuvwxyz"
     return plaintext.lower()
