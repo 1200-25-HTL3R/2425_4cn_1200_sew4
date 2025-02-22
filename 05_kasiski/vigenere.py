@@ -36,4 +36,6 @@ class Vigenere:
 
 
 if __name__ == "__main__":
-    v = Vigenere()
+    import doctest
+
+    doctest.testmod()
