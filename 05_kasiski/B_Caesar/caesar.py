@@ -41,6 +41,26 @@ class Caesar:
 
         return out
 
+    def decrypt(self, plaintext: str, key: str | None = None) -> str:
+        """key ist ein Buchstabe, der definiert, um wieviele Zeichen verschoben wird.
+        Falls kein key übergeben wird, nimmt übernimmt decrypt den Wert vom Property.
+        >>> caesar=Caesar("b")
+        >>> caesar.key
+        'b'
+        >>> caesar.decrypt("ibmmp")
+        'hallo'
+        """
+        if key is None:
+            key = self.key
+
+        out = ""
+
+        neg_key = 26 - (ord(key) - 97)
+        for ch in plaintext:
+            out += chr(((ord(ch) - 97) + neg_key) % 26 + 97)
+
+        return out
+
 
 if __name__ == "__main__":
     import doctest
