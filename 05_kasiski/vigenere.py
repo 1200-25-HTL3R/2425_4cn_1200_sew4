@@ -23,6 +23,17 @@ class Vigenere:
 
         return out
 
+    def decrypt(self, crypttext: str, key: str | None = None) -> str:
+        if key is None:
+            key = self.key
+
+        crypttext = self.caesar.to_lowercase_letter_only(crypttext)
+        out = ""
+        for i, ch in enumerate(crypttext):
+            out += self.caesar.decrypt(ch, key[i % len(key)])
+
+        return out
+
 
 if __name__ == "__main__":
     v = Vigenere()
