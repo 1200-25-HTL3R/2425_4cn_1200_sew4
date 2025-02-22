@@ -1,6 +1,3 @@
-from typing import OrderedDict, Self
-
-
 class Caesar:
     def __init__(self, key: str | None = None) -> None:
         if key:
