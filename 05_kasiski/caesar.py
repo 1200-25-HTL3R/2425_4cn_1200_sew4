@@ -105,7 +105,7 @@ class Caesar:
 
         rel_letter_freq: dict[str, float] = self.get_rel_letter_freq(crypttext)
         scores: dict[float, str] = {}
-        for offset in range(0, 26):
+        for offset in range(26):
             score: float = 0
             for key in rel_ger_letter_frequency:
                 offset_key: str = chr((ord(key) - 97 + offset) % 26 + 97)
@@ -137,5 +137,3 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-
-    c = Caesar()
