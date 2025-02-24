@@ -117,7 +117,6 @@ class Caesar:
             "y": 0.0004,
             "z": 0.0113,
         }
-
         rel_letter_freq: dict[str, float] = self.get_rel_letter_freq(crypttext)
         scores: dict[float, str] = {}
         for offset in range(26):
