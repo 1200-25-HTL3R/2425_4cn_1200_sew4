@@ -1,7 +1,8 @@
-from os import read
 from typing import Counter
 from caesar import Caesar
 from vigenere import Vigenere
+
+__author__ = "Benedikt Theuretzbachner"
 
 
 class Kasiski:
@@ -23,11 +24,9 @@ class Kasiski:
         offset: int = 0
         while pos != -1:
             poss.append(pos + offset)
-            try:
-                text = text[pos + 1 :]
-                offset += pos + 1
-            except:
-                break
+
+            text = text[pos + 1 :]
+            offset += pos + 1
             pos = text.find(teilstring)
 
         return poss
@@ -133,6 +132,16 @@ class Kasiski:
         return out
 
     def crack_key(self, len: int) -> str:
+        """
+        Crackt den key für einen Vigenere verschlüsselten text mit der Kasiski Methode
+        :param len: Länge der Textfenster für die Kasiski methode
+        :return: gekrackter key
+        >>> cleartext = 'Familie Müller plant ihren Urlaub. Sie geht in ein Reisebüro und lässt sich von einem Angestellten beraten. Als Reiseziel wählt sie Mallorca aus. Familie Müller bucht einen Flug auf die Mittelmeerinsel. Sie bucht außerdem zwei Zimmer in einem großen Hotel direkt am Strand. Familie Müller badet gerne im Meer.Am Abflugtag fahren Herr und Frau Müller mit ihren beiden Kindern im Taxi zum Flughafen. Dort warten schon viele Urlauber. Alle wollen nach Mallorca fliegen. Familie Müller hat viel Gepäck dabei: drei große Koffer und zwei Taschen. Die Taschen sind Handgepäck. Familie Müller nimmt sie mit in das Flugzeug. Am Flugschalter checkt die Familie ein und erhält ihre Bordkarten. Die Angestellte am Flugschalter erklärt Herrn Müller den Weg zum Flugsteig. Es ist nicht mehr viel Zeit bis zum Abflug. Familie Müller geht durch die Sicherheitskontrolle. Als alle das richtige Gate erreichen, setzen sie sich in den Wartebereich. Kurz darauf wird ihre Flugnummer aufgerufen und Familie Müller steigt mit vielen anderen Passagieren in das Flugzeug nach Mallorca. Beim Starten fühlt sich Herr Müller nicht wohl. Ihm wird ein wenig übel. Nach zwei Stunden landet das Flugzeug. Am Gepäckband warten alle Passagiere noch auf ihr fehlendes Gepäck. Danach kann endlich der Urlaub beginnen.'
+        >>> v = Vigenere("kasiski")
+        >>> k = Kasiski(v.encrypt(cleartext))
+        >>> k.crack_key(4)
+        'kasiski'
+        """
         dists: list[int] = self.dist_n_list(self.crypttext, len)
         key_len: int = self.ggt_count(dists).most_common(1)[0][0]
         key: str = ""

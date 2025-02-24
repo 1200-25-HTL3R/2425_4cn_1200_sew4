@@ -1,11 +1,26 @@
+__author__ = "Benedikt Theuretzbachner"
+
+
 class Caesar:
+    key = None
+
     def __init__(self, key: str | None = None) -> None:
+        self.key = self.assing_key(key)
+
+    def assing_key(self, key: str | None = None) -> str:
+        """
+        Key prüfen, und wenn gültig key returnen, wenn nicht self.key returnen, ansonsten 'a' returnen
+        :param key: input schlüssel
+        :return: zugewiesener key
+        """
         if key:
             if not key.isalpha() or not len(key) == 1:
                 raise ValueError("key must be a single alphanumeric letter")
-            self.key = key
+            return key.lower()
+        elif self.key is not None:
+            return self.key
         else:
-            self.key = "a"
+            return "a"
 
     def to_lowercase_letter_only(self, plaintext: str) -> str:
         """Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine
@@ -14,7 +29,6 @@ class Caesar:
         >>> caesar.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
         'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstabenausdembereichazsind'
         """
-        letters = "abcdefghijklmnopqrstuvwxyz"
         return "".join(filter(lambda ch: ch.isalpha(), plaintext.lower()))
 
     def encrypt(self, plaintext: str, key: str | None = None) -> str:
@@ -32,8 +46,7 @@ class Caesar:
         >>> caesar.encrypt("xyz", "c")
         'zab'
         """
-        if key is None:
-            key = self.key
+        key = self.assing_key(key)
 
         out = ""
         for ch in plaintext:
@@ -50,8 +63,7 @@ class Caesar:
         >>> caesar.decrypt("ibmmp")
         'hallo'
         """
-        if key is None:
-            key = self.key
+        key = self.assing_key(key)
 
         out = ""
 
@@ -63,6 +75,10 @@ class Caesar:
 
     def crack(self, crypttext: str, elements: int = 1) -> list[str]:
         """
+        Caesar chiffre mit häufigkeitsanalyse knacken
+        :param crypttext: verschlüsselter text
+        :param elements: wieviele der warscheinlichsten schlüssel zurückgegeben werdenKlen
+        :return: wahrscheinlichsten schlüssel absteigend sortiert
         >>> str='Vor einem großen Walde wohnte ein armer Holzhacker mit seiner Frau und seinen zwei Kindern; das Bübchen hieß Hänsel und das Mädchen Gretel. Er hatte wenig zu beißen und zu brechen, und einmal, als große Teuerung ins Land kam, konnte er das tägliche Brot nicht mehr schaffen. Wie er sich nun abends im Bette Gedanken machte und sich vor Sorgen herumwälzte, seufzte er und sprach zu seiner Frau: "Was soll aus uns werden? Wie können wir unsere armen Kinder ernähren da wir für uns selbst nichts mehr haben?"'
         >>> caesar = Caesar()
         >>> caesar.crack(str)
@@ -73,7 +89,6 @@ class Caesar:
         >>> caesar.crack(crypted, 3)
         ['y', 'h', 'd']
         """
-        ALPHABET: str = "abcdefghijklmnopqrstuvwxyz"
         rel_ger_letter_frequency: dict[str, float] = {
             "a": 0.0651,
             "b": 0.0189,
@@ -109,16 +124,19 @@ class Caesar:
             score: float = 0
             for key in rel_ger_letter_frequency:
                 offset_key: str = chr((ord(key) - 97 + offset) % 26 + 97)
-                try:
+                if offset_key in rel_letter_freq:
                     score += abs(
                         rel_letter_freq[offset_key] - rel_ger_letter_frequency[key]
                     )
-                except:
-                    pass
             scores[score] = chr(ord("a") + offset)
         return list(dict(sorted(scores.items())).values())[:elements]
 
     def get_rel_letter_freq(self, text: str) -> dict[str, float]:
+        """
+        Berechnet die relative häufigkeit der buchstaben in text
+        :param text: input text
+        :return: buchstaben als key und rel. häufigkeit als value
+        """
         text = self.to_lowercase_letter_only(text)
 
         frequencies: dict[str, float] = {}
