@@ -1,3 +1,5 @@
+#!/bin/python
+
 from pathlib import Path
 
 __author__ = "Benedikt theuretzbachner"
