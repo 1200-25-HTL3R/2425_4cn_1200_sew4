@@ -8,11 +8,11 @@ import shutil
 __author__ = "Benedikt theuretzbachner"
 
 
-src_path = Path(input("[source path]> "))
+src_path = Path(input("[source directory]> "))
 if not src_path.is_dir():
     raise Exception("Path must be an existing directory")
 
-dest_path = Path(input("[destination path]> "))
+dest_path = Path(input("[destination directory]> "))
 if not dest_path.is_dir():
     raise Exception("Path must be an existing directory")
 

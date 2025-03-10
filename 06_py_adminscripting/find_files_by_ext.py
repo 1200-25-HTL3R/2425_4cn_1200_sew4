@@ -5,11 +5,11 @@ from pathlib import Path
 __author__ = "Benedikt theuretzbachner"
 
 
-path = Path(input("[filepath]> "))
+path = Path(input("[target directory]> "))
 if not path.is_dir():
     raise Exception("Path must be an existing directory")
 
-suffix = input("[file-extension]> ")
+suffix = input("[file extension]> ")
 if not suffix.startswith("."):
     suffix = "." + suffix
 
