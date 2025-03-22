@@ -1,6 +1,6 @@
 from typing import Counter
-from caesar import Caesar
-from vigenere import Vigenere
+from .caesar import Caesar
+from .vigenere import Vigenere
 
 __author__ = "Benedikt Theuretzbachner"
 
