@@ -3,3 +3,7 @@
 .idea/
 
 __pychache__/
+
+07_argparse/*.txt
+07_slides_py_argparse.pdf
+ct.05.24.152-157_py_argparse.pdf
