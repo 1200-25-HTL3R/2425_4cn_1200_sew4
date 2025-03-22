@@ -75,23 +75,19 @@ if __name__ == "__main__":
     if args.decrypt:
         if args.verbose:
             print(
-                f"Decrypting {method} with key = {key} from file {args.infile} into {output_dest}"
+                f"Decrypting {method} with key='{key}' from file {args.infile} into {output_dest}\n"
             )
 
         outtext = chipher.decrypt(intext)
     else:
         if args.verbose:
             print(
-                f"Encrypting {method} with key = {key} from file {args.infile} into {output_dest}\n"
+                f"Encrypting {method} with key='{key}' from file {args.infile} into {output_dest}\n"
             )
         outtext = chipher.encrypt(intext)
 
     if args.outfile:
-        try:
-            with open(args.outfile, "w") as f:
-                f.write(outtext)
-        except FileNotFoundError:
-            print(args.infile + ":", os.strerror(2))
-            exit(2)
+        with open(args.outfile, "w") as f:
+            f.write(outtext)
     else:
         print(outtext)
