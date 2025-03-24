@@ -53,7 +53,7 @@ def main():
 
     try:
         with open(args.infile) as f:
-            intext = f.read()
+            intext: str = f.read()
     except FileNotFoundError:
         print(args.infile + ":", os.strerror(2))
         exit(2)
@@ -71,7 +71,7 @@ def main():
 
         if args.verbose:
             print(f"Cracking {method}-encrypted file {args.infile}: Key = ", end="")
-        key = caesar_obj.crack(intext)[0]
+        key: str = caesar_obj.crack(intext)[0]
 
     print(key)
 

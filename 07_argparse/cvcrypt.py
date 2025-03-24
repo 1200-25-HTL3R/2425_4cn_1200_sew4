@@ -58,7 +58,7 @@ def main():
     args = parser.parse_args()
 
     if args.key:
-        key = args.key
+        key: str = args.key
     else:
         key = "a"
 
@@ -71,7 +71,7 @@ def main():
 
     try:
         with open(args.infile) as f:
-            intext = f.read()
+            intext: str = f.read()
     except FileNotFoundError:
         print(args.infile + ":", os.strerror(2))
         exit(2)
@@ -87,13 +87,13 @@ def main():
                 f"Decrypting {method} with key='{key}' from file {args.infile} into {output_dest}\n"
             )
 
-        outtext = chipher.decrypt(intext)
+        outtext: str = chipher.decrypt(intext)
     else:
         if args.verbose:
             print(
                 f"Encrypting {method} with key='{key}' from file {args.infile} into {output_dest}\n"
             )
-        outtext = chipher.encrypt(intext)
+        outtext: str = chipher.encrypt(intext)
 
     if args.outfile:
         with open(args.outfile, "w") as f:
