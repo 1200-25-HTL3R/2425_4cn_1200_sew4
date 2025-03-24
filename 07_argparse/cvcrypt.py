@@ -13,11 +13,17 @@ parser = argparse.ArgumentParser(
 
 
 def add_positional_args():
+    """
+    Add positional arguments to argument parser.
+    """
     parser.add_argument("infile", help="Zu verschlüsselnde Datei")
     parser.add_argument("outfile", nargs="?", help="Zieldatei")
 
 
 def add_options():
+    """
+    Add options to argument parser.
+    """
     parser.add_argument(
         "-c",
         "--cipher",
@@ -28,6 +34,9 @@ def add_options():
 
 
 def add_flags():
+    """
+    Add flags to argument parser.
+    """
     output = parser.add_mutually_exclusive_group()
     output.add_argument("-v", "--verbose", action="store_true")
     output.add_argument("-q", "--quiet", action="store_true")
@@ -37,7 +46,10 @@ def add_flags():
     action.add_argument("-e", "--encrypt", action="store_true")
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Encrypt or decrypt input file according to the arguments specified by the user.
+    """
     add_positional_args()
     add_options()
     add_flags()
@@ -88,3 +100,7 @@ if __name__ == "__main__":
             f.write(outtext)
     else:
         print(outtext)
+
+
+if __name__ == "__main__":
+    main()
