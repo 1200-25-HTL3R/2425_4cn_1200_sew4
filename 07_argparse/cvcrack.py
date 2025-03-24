@@ -73,7 +73,7 @@ def main():
             print(f"Cracking {method}-encrypted file {args.infile}: Key = ", end="")
         key: str = caesar_obj.crack(intext)[0]
 
-    print(key)
+    print(key + "\n")
 
 
 if __name__ == "__main__":
