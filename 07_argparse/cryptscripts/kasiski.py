@@ -131,7 +131,7 @@ class Kasiski:
 
         return out
 
-    def crack_key(self, len: int) -> str:
+    def crack(self, len: int) -> str:
         """
         Crackt den key für einen Vigenere verschlüsselten text mit der Kasiski Methode
         :param len: Länge der Textfenster für die Kasiski methode
@@ -164,4 +164,4 @@ if __name__ == "__main__":
     enc_text = v.encrypt(message)
 
     k = Kasiski(enc_text)
-    print(k.crack_key(8))
+    print(k.crack(8))
