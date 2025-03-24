@@ -29,7 +29,9 @@ class Caesar:
         >>> caesar.to_lowercase_letter_only("Wandelt den plaintext in Kleinbuchstaben um und entfernt alle Zeichen, die keine Kleinbuchstaben aus dem Bereich [a..z] sind.")
         'wandeltdenplaintextinkleinbuchstabenumundentferntallezeichendiekeinekleinbuchstabenausdembereichazsind'
         """
-        return "".join(filter(lambda ch: ch.isalpha(), plaintext.lower()))
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        return "".join(filter(lambda ch: ch in alphabet, plaintext.lower()))
+        # return "".join(filter(lambda ch: ch.isalpha(), plaintext.lower()))
 
     def encrypt(self, plaintext: str, key: str | None = None) -> str:
         """key ist ein Buchstabe, der definiert, um wieviele Zeichen verschoben wird.
@@ -46,6 +48,7 @@ class Caesar:
         >>> caesar.encrypt("xyz", "c")
         'zab'
         """
+        plaintext = self.to_lowercase_letter_only(plaintext)
         key = self.assing_key(key)
 
         out = ""
@@ -63,6 +66,7 @@ class Caesar:
         >>> caesar.decrypt("ibmmp")
         'hallo'
         """
+        crypttext = self.to_lowercase_letter_only(crypttext)
         key = self.assing_key(key)
 
         out = ""
@@ -89,6 +93,7 @@ class Caesar:
         >>> caesar.crack(crypted, 3)
         ['y', 'h', 'd']
         """
+        crypttext = self.to_lowercase_letter_only(crypttext)
         rel_ger_letter_frequency: dict[str, float] = {
             "a": 0.0651,
             "b": 0.0189,

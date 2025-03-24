@@ -64,9 +64,6 @@ if __name__ == "__main__":
         print(args.infile + ":", os.strerror(2))
         exit(2)
 
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    intext = "".join(filter(lambda ch: ch in alphabet, intext.lower()))
-
     if args.outfile:
         output_dest = "file " + args.outfile
     else:

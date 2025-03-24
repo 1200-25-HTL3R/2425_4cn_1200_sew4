@@ -3,7 +3,7 @@
 import argparse
 import os
 
-from cryptscripts import caesar, vigenere
+from cryptscripts import caesar, kasiski
 
 __author__ = "Benedikt Theuretzbchner"
 
@@ -39,13 +39,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.cipher and args.cipher == "vigenere" or args.cipher == "v":
-        chipher = vigenere.Vigenere()
-        method = "Vigenere"
-    else:
-        chipher = caesar.Caesar()
-        method = "Caesar"
-
     try:
         with open(args.infile) as f:
             intext = f.read()
@@ -53,9 +46,19 @@ if __name__ == "__main__":
         print(args.infile + ":", os.strerror(2))
         exit(2)
 
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    intext = "".join(filter(lambda ch: ch in alphabet, intext.lower()))
+    if args.cipher and args.cipher == "vigenere" or args.cipher == "v":
+        kasiski_obj = kasiski.Kasiski(intext)
+        method = "Vigenere"
 
-    if args.verbose:
-        print(f"Cracking {method}-encrypted file {args.infile}: ")
-    outtext = chipher.encrypt(intext)
+        if args.verbose:
+            print(f"Cracking {method}-encrypted file {args.infile}: Key = ", end="")
+        key = kasiski_obj.crack(6)
+    else:
+        caesar_obj = caesar.Caesar()
+        method = "Caesar"
+
+        if args.verbose:
+            print(f"Cracking {method}-encrypted file {args.infile}: Key = ", end="")
+        key = caesar_obj.crack(intext)[0]
+
+    print(key)
