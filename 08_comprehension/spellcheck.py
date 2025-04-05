@@ -1,3 +1,6 @@
+import doctest
+
+
 def read_all_words(filename: str) -> set[str]:
     with open(filename) as f:
         return set(w.strip().lower() for w in f)
@@ -36,5 +39,22 @@ def edit2_good(wort: str, alle_woerter: set[str]) -> set[str]:
     return corrections
 
 
+def correct(word: str, alle_woerter: set[str]) -> list[str]:
+    """
+    >>> woerter = read_all_words("de-en.txt")
+    >>> sorted(correct("Aalsuppe", woerter))
+    ['aalsuppe']
+    >>> sorted(correct("Alsuppe", woerter))
+    ['aalsuppe']
+    >>> sorted(correct("Alsupe", woerter))
+    ['aalsuppe', 'absude', 'alse', 'lupe']
+    """
+    word = word.lower()
+    if word in alle_woerter:
+        return [word]
+
+    return list(edit1_good(word, alle_woerter) or edit2_good(word, alle_woerter))
+
+
 if __name__ == "__main__":
-    print(edit2_good("Pyton", read_all_words("de-en.txt")))
+    doctest.testmod()
