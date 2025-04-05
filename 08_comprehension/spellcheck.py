@@ -3,6 +3,9 @@ def read_all_words(filename: str) -> set[str]:
         return set(w for w in f)
 
 
+def split_word(wort: str) -> list[tuple[str, str]]:
+    return [(wort[:i], wort[i:]) for i in range(0, len(wort) + 1)]
+
+
 if __name__ == "__main__":
-    s = read_all_words("de-en.txt")
-    print(len(s))
+    print(split_word("abc"))
