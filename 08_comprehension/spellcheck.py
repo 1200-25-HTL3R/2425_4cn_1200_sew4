@@ -12,17 +12,18 @@ def split_word(wort: str) -> list[tuple[str, str]]:
 
 def edit1(wort: str) -> set[str]:
     typos = set()
+
     for s_word in split_word(wort):
-        l = s_word[0]
-        r = s_word[1]
+        start: str = s_word[0]
+        end: str = s_word[1]
         alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-        if len(r) >= 2:
-            typos.add(l + r[1:])
-            typos.add(l + r[1] + r[0] + r[2:])
-        if len(r) >= 1:
-            typos |= set(l + ch + r[1:] for ch in alphabet)
-        typos |= set(l + ch + r for ch in alphabet)
+        if len(end) >= 2:
+            typos.add(start + end[1:])
+            typos.add(start + end[1] + end[0] + end[2:])
+        if len(end) >= 1:
+            typos |= set(start + ch + end[1:] for ch in alphabet)
+        typos |= set(start + ch + end for ch in alphabet)
 
     return typos
 
@@ -33,6 +34,7 @@ def edit1_good(wort: str, alle_woerter: set[str]) -> set[str]:
 
 def edit2_good(wort: str, alle_woerter: set[str]) -> set[str]:
     corrections = set()
+
     for w in edit1(wort.lower()):
         corrections |= edit1_good(w, alle_woerter)
 
