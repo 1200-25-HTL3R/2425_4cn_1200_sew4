@@ -1,6 +1,6 @@
 def read_all_words(filename: str) -> set[str]:
     with open(filename) as f:
-        return set(w for w in f)
+        return set(w.strip().lower() for w in f)
 
 
 def split_word(wort: str) -> list[tuple[str, str]]:
@@ -24,5 +24,9 @@ def edit1(wort: str) -> set[str]:
     return typos
 
 
+def edit1_good(wort: str, alle_woerter: set[str]) -> set[str]:
+    return edit1(wort.lower()) & alle_woerter
+
+
 if __name__ == "__main__":
-    print(edit1("abc"))
+    print(edit1_good("Pyton", read_all_words("de-en.txt")))
