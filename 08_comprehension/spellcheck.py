@@ -18,8 +18,8 @@ def edit1(wort: str) -> set[str]:
             typos.add(l + r[1:])
             typos.add(l + r[1] + r[0] + r[2:])
         if len(r) >= 1:
-            typos.update(set(l + ch + r[1:] for ch in alphabet))
-        typos.update(set(l + ch + r for ch in alphabet))
+            typos |= set(l + ch + r[1:] for ch in alphabet)
+        typos |= set(l + ch + r for ch in alphabet)
 
     return typos
 
@@ -28,5 +28,13 @@ def edit1_good(wort: str, alle_woerter: set[str]) -> set[str]:
     return edit1(wort.lower()) & alle_woerter
 
 
+def edit2_good(wort: str, alle_woerter: set[str]) -> set[str]:
+    corrections = set()
+    for w in edit1(wort.lower()):
+        corrections |= edit1_good(w, alle_woerter)
+
+    return corrections
+
+
 if __name__ == "__main__":
-    print(edit1_good("Pyton", read_all_words("de-en.txt")))
+    print(edit2_good("Pyton", read_all_words("de-en.txt")))
