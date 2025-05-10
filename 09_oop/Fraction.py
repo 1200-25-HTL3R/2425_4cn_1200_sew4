@@ -12,3 +12,19 @@ class Fraction:
 
         if zaehler * nenner < 0:
             self._neg = True
+
+    @property
+    def numerator(self):
+        return self._numerator
+
+    @numerator.setter
+    def numerator(self, numerator):
+        self._numerator = numerator
+
+    @property
+    def denominator(self):
+        return self._denominator
+
+    @denominator.setter
+    def denominator(self, denominator):
+        self._denominator = denominator
