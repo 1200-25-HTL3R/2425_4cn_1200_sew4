@@ -137,7 +137,11 @@ class Fraction:
         other_num = other.numerator / other.denominator
         return self_num > other_num
 
+    def __float__(self):
+        return self.numerator / self.denominator
+
 
 if __name__ == "__main__":
     print(Fraction(2, 4) > Fraction(1, 4))
     print(Fraction(4, 4) != 2)
+    print(float(Fraction(1, 2)))
