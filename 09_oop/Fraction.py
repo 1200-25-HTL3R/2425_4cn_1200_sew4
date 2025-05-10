@@ -13,6 +13,21 @@ class Fraction:
         if zaehler * nenner < 0:
             self._neg = True
 
+    def __str__(self):
+        sign = ""
+        if self._neg:
+            sign = "-"
+
+        num = self.numerator / self.denominator
+        num = int(num)
+        if num == 0:
+            return sign + str(self.numerator) + "/" + str(self.denominator)
+
+        self.numerator -= num * self.denominator
+        num_str = str(num) + " "
+
+        return sign + num_str + str(self.numerator) + "/" + str(self.denominator)
+
     @property
     def numerator(self):
         return self._numerator
