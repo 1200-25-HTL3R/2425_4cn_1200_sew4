@@ -1,4 +1,5 @@
 import math
+import re
 
 
 class Fraction:
@@ -86,9 +87,27 @@ class Fraction:
 
         return Fraction(numerator, denominator)
 
+    def __truediv__(self, other):
+        if not isinstance(other, Fraction):
+            return self.__truediv__(Fraction(other))
+
+        numerator = self.numerator * other.denominator
+        denominator = self.denominator * other.numerator
+
+        return Fraction(numerator, denominator)
+
+    def __floordiv__(self, other):
+        if not isinstance(other, Fraction):
+            return self.__floordiv__(Fraction(other))
+
+        numerator = self.numerator * other.denominator
+        denominator = self.denominator * other.numerator
+
+        return Fraction(numerator // denominator, 1)
+
 
 if __name__ == "__main__":
-    f = Fraction(2)
-    f2 = Fraction(3)
+    f = Fraction(4, 2)
+    f2 = Fraction(3, 2)
 
-    print(f * f2)
+    print(f // f2)
