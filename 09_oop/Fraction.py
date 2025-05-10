@@ -1,7 +1,8 @@
 import math
-import re
+from functools import total_ordering
 
 
+@total_ordering
 class Fraction:
     _numerator = 0
     _denominator = 1
@@ -120,10 +121,23 @@ class Fraction:
     def __rfloordiv__(self, other):
         return Fraction(other).__floordiv__(self)
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Fraction):
+            return self.__eq__(Fraction(other))
+
+        return (
+            self.numerator == other.numerator and self.denominator == other.denominator
+        )
+
+    def __gt__(self, other) -> bool:
+        if not isinstance(other, Fraction):
+            return self.__gt__(Fraction(other))
+
+        self_num = self.numerator / self.denominator
+        other_num = other.numerator / other.denominator
+        return self_num > other_num
+
 
 if __name__ == "__main__":
-    f = Fraction(4, 2)
-    f2 = Fraction(3, 2)
-
-    print(Fraction(1, 2) + 1)
-    print(5 // Fraction(4, 2))
+    print(Fraction(2, 4) > Fraction(1, 4))
+    print(Fraction(4, 4) != 2)
