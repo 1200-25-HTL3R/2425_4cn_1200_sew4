@@ -67,6 +67,9 @@ class Fraction:
 
         return Fraction(numerator, denominator)
 
+    def __radd__(self, other):
+        return self.__add__(other)
+
     def __sub__(self, other):
         if not isinstance(other, Fraction):
             return self.__sub__(Fraction(other))
@@ -78,6 +81,9 @@ class Fraction:
 
         return Fraction(numerator, denominator)
 
+    def __rsub__(self, other):
+        return Fraction(other).__sub__(self)
+
     def __mul__(self, other):
         if not isinstance(other, Fraction):
             return self.__mul__(Fraction(other))
@@ -86,6 +92,9 @@ class Fraction:
         denominator = self.denominator * other.denominator
 
         return Fraction(numerator, denominator)
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
 
     def __truediv__(self, other):
         if not isinstance(other, Fraction):
@@ -96,6 +105,9 @@ class Fraction:
 
         return Fraction(numerator, denominator)
 
+    def __rtruediv__(self, other):
+        return Fraction(other).__truediv__(self)
+
     def __floordiv__(self, other):
         if not isinstance(other, Fraction):
             return self.__floordiv__(Fraction(other))
@@ -105,9 +117,13 @@ class Fraction:
 
         return Fraction(numerator // denominator, 1)
 
+    def __rfloordiv__(self, other):
+        return Fraction(other).__floordiv__(self)
+
 
 if __name__ == "__main__":
     f = Fraction(4, 2)
     f2 = Fraction(3, 2)
 
-    print(f // f2)
+    print(Fraction(1, 2) + 1)
+    print(5 // Fraction(4, 2))
