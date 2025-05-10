@@ -28,6 +28,9 @@ class Fraction:
 
         return sign + num_str + str(self.numerator) + "/" + str(self.denominator)
 
+    def __repr__(self) -> str:
+        return f"Fraction({self.numerator}, {self.denominator})"
+
     @property
     def numerator(self):
         return self._numerator
@@ -43,3 +46,8 @@ class Fraction:
     @denominator.setter
     def denominator(self, denominator):
         self._denominator = denominator
+
+
+if __name__ == "__main__":
+    f = Fraction(1, -3)
+    print(f)
