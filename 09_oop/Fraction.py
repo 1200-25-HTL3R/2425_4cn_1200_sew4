@@ -77,9 +77,18 @@ class Fraction:
 
         return Fraction(numerator, denominator)
 
+    def __mul__(self, other):
+        if not isinstance(other, Fraction):
+            return self.__mul__(Fraction(other))
+
+        numerator = self.numerator * other.numerator
+        denominator = self.denominator * other.denominator
+
+        return Fraction(numerator, denominator)
+
 
 if __name__ == "__main__":
-    f = Fraction(-2, 4)
-    f2 = Fraction(1, 4)
+    f = Fraction(2)
+    f2 = Fraction(3)
 
-    print(f - f2)
+    print(f * f2)
