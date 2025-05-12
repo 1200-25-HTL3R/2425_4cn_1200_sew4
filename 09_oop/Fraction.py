@@ -1,11 +1,12 @@
 import math
 from functools import total_ordering
 import doctest
+from types import NotImplementedType
 
 
 @total_ordering
 class Fraction:
-    def __init__(self, numerator=0, denominator=1) -> None:
+    def __init__(self, numerator: int = 0, denominator: int = 1) -> None:
         """
         Constructor for Fraction class
 
@@ -28,11 +29,11 @@ class Fraction:
             numerator = abs(numerator)
             denominator = abs(denominator)
 
-        gcd = math.gcd(numerator, denominator)
-        self._numerator = int(numerator / gcd)
-        self._denominator = int(denominator / gcd)
+        gcd: int = math.gcd(numerator, denominator)
+        self._numerator: int = int(numerator / gcd)
+        self._denominator: int = int(denominator / gcd)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         str method for Fraction class
 
@@ -46,12 +47,11 @@ class Fraction:
         if self.numerator == 0:
             return "0"
 
-        prefix = self.numerator / self.denominator
-        prefix = int(prefix)
+        prefix: int = int(self.numerator / self.denominator)
         if prefix == 0:
             return str(self.numerator) + "/" + str(self.denominator)
 
-        new_numerator = self.numerator - prefix * self.denominator
+        new_numerator: int = self.numerator - prefix * self.denominator
         prefix = abs(prefix)
         if new_numerator == 0:
             return str(prefix)
@@ -72,7 +72,7 @@ class Fraction:
         return f"Fraction({self.numerator}, {self.denominator})"
 
     @property
-    def numerator(self):
+    def numerator(self) -> int:
         """
         Getter for numerator
 
@@ -84,7 +84,7 @@ class Fraction:
         return self._numerator
 
     @numerator.setter
-    def numerator(self, numerator):
+    def numerator(self, numerator: int) -> None:
         """
         Setter for numerator
 
@@ -97,7 +97,7 @@ class Fraction:
         self = Fraction(numerator, self.denominator)
 
     @property
-    def denominator(self):
+    def denominator(self) -> int:
         """
         Getter for denominator
 
@@ -109,7 +109,7 @@ class Fraction:
         return self._denominator
 
     @denominator.setter
-    def denominator(self, denominator):
+    def denominator(self, denominator: int) -> None:
         """
         Setter for denominator
 
@@ -121,7 +121,7 @@ class Fraction:
         self._denominator = denominator
         self = Fraction(self.numerator, denominator)
 
-    def __add__(self, other):
+    def __add__(self, otherfraction: "int | Fraction") -> "Fraction":
         """
         Adds two fractions or a fraction and an integer.
 
@@ -130,20 +130,21 @@ class Fraction:
 
         >>> Fraction(1, 2) + Fraction(1, 4)
         Fraction(3, 4)
-        >>> Fraction(1, 2) + 1
+        >>> Fraction(1, 2) + 1.0
         Fraction(3, 2)
         """
-        if not isinstance(other, Fraction):
-            return self.__add__(Fraction(other))
+        if not isinstance(otherfraction, Fraction):
+            return self.__add__(Fraction(otherfraction))
 
         numerator = (
-            self.numerator * other.denominator + other.numerator * self.denominator
+            self.numerator * otherfraction.denominator
+            + otherfraction.numerator * self.denominator
         )
-        denominator = self.denominator * other.denominator
+        denominator = self.denominator * otherfraction.denominator
 
         return Fraction(numerator, denominator)
 
-    def __radd__(self, other):
+    def __radd__(self, other: int) -> "Fraction":
         """
         Right-hand addition support.
 
@@ -155,7 +156,7 @@ class Fraction:
         """
         return self.__add__(other)
 
-    def __sub__(self, other):
+    def __sub__(self, otherfraction: "int | Fraction") -> "Fraction":
         """
         Subtracts two fractions.
 
@@ -165,17 +166,18 @@ class Fraction:
         >>> Fraction(3, 4) - Fraction(1, 4)
         Fraction(1, 2)
         """
-        if not isinstance(other, Fraction):
-            return self.__sub__(Fraction(other))
+        if not isinstance(otherfraction, Fraction):
+            return self.__sub__(Fraction(otherfraction))
 
         numerator = (
-            self.numerator * other.denominator - other.numerator * self.denominator
+            self.numerator * otherfraction.denominator
+            - otherfraction.numerator * self.denominator
         )
-        denominator = self.denominator * other.denominator
+        denominator = self.denominator * otherfraction.denominator
 
         return Fraction(numerator, denominator)
 
-    def __rsub__(self, other):
+    def __rsub__(self, other: int) -> "Fraction":
         """
         Right-hand subtraction support.
 
@@ -187,7 +189,7 @@ class Fraction:
         """
         return Fraction(other).__sub__(self)
 
-    def __mul__(self, other):
+    def __mul__(self, otherfraction: "int | Fraction") -> "Fraction":
         """
         Multiplies two fractions.
 
@@ -197,15 +199,15 @@ class Fraction:
         >>> Fraction(2, 3) * Fraction(3, 4)
         Fraction(1, 2)
         """
-        if not isinstance(other, Fraction):
-            return self.__mul__(Fraction(other))
+        if not isinstance(otherfraction, Fraction):
+            return self.__mul__(Fraction(otherfraction))
 
-        numerator = self.numerator * other.numerator
-        denominator = self.denominator * other.denominator
+        numerator = self.numerator * otherfraction.numerator
+        denominator = self.denominator * otherfraction.denominator
 
         return Fraction(numerator, denominator)
 
-    def __rmul__(self, other):
+    def __rmul__(self, otherfraction: int) -> "Fraction":
         """
         Right-hand multiplication support.
 
@@ -215,9 +217,9 @@ class Fraction:
         >>> 3 * Fraction(2, 3)
         Fraction(2, 1)
         """
-        return self.__mul__(other)
+        return self.__mul__(otherfraction)
 
-    def __truediv__(self, other):
+    def __truediv__(self, otherfraction: "int | Fraction") -> "Fraction":
         """
         Divides this fraction by another.
 
@@ -227,15 +229,15 @@ class Fraction:
         >>> Fraction(1, 2) / Fraction(1, 4)
         Fraction(2, 1)
         """
-        if not isinstance(other, Fraction):
-            return self.__truediv__(Fraction(other))
+        if not isinstance(otherfraction, Fraction):
+            return self.__truediv__(Fraction(otherfraction))
 
-        numerator = self.numerator * other.denominator
-        denominator = self.denominator * other.numerator
+        numerator = self.numerator * otherfraction.denominator
+        denominator = self.denominator * otherfraction.numerator
 
         return Fraction(numerator, denominator)
 
-    def __rtruediv__(self, other):
+    def __rtruediv__(self, otherfraction: int) -> "Fraction":
         """
         Right-hand division support.
 
@@ -245,9 +247,9 @@ class Fraction:
         >>> 1 / Fraction(1, 2)
         Fraction(2, 1)
         """
-        return Fraction(other).__truediv__(self)
+        return Fraction(otherfraction).__truediv__(self)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, otherfraction: "int | Fraction") -> "Fraction":
         """
         Performs floor division between fractions.
 
@@ -257,15 +259,15 @@ class Fraction:
         >>> Fraction(5, 3) // Fraction(1, 2)
         Fraction(3, 1)
         """
-        if not isinstance(other, Fraction):
-            return self.__floordiv__(Fraction(other))
+        if not isinstance(otherfraction, Fraction):
+            return self.__floordiv__(Fraction(otherfraction))
 
-        numerator = self.numerator * other.denominator
-        denominator = self.denominator * other.numerator
+        numerator = self.numerator * otherfraction.denominator
+        denominator = self.denominator * otherfraction.numerator
 
         return Fraction(numerator // denominator, 1)
 
-    def __rfloordiv__(self, other):
+    def __rfloordiv__(self, otherfraction: int) -> "Fraction":
         """
         Right-hand floor division support.
 
@@ -275,9 +277,9 @@ class Fraction:
         >>> 3 // Fraction(2, 3)
         Fraction(4, 1)
         """
-        return Fraction(other).__floordiv__(self)
+        return Fraction(otherfraction).__floordiv__(self)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, otherfraction: object) -> bool | NotImplementedType:
         """
         Checks equality between two fractions.
 
@@ -286,15 +288,20 @@ class Fraction:
 
         >>> Fraction(1, 2) == Fraction(2, 4)
         True
+        >>> Fraction(2, 1) == 2
+        True
         """
-        if not isinstance(other, Fraction):
-            return self.__eq__(Fraction(other))
+        if not (isinstance(otherfraction, int) or isinstance(otherfraction, Fraction)):
+            return NotImplemented
+        if not isinstance(otherfraction, Fraction):
+            return self.__eq__(Fraction(otherfraction))
 
         return (
-            self.numerator == other.numerator and self.denominator == other.denominator
+            self.numerator == otherfraction.numerator
+            and self.denominator == otherfraction.denominator
         )
 
-    def __gt__(self, other) -> bool:
+    def __gt__(self, otherfraction: object) -> bool | NotImplementedType:
         """
         Checks if this fraction is greater than another.
 
@@ -303,15 +310,19 @@ class Fraction:
 
         >>> Fraction(3, 4) > Fraction(2, 3)
         True
+        >>> 1 > Fraction(2, 3)
+        True
         """
-        if not isinstance(other, Fraction):
-            return self.__gt__(Fraction(other))
+        if not (isinstance(otherfraction, int) or isinstance(otherfraction, Fraction)):
+            return NotImplemented
+        if not isinstance(otherfraction, Fraction):
+            return self.__gt__(Fraction(otherfraction))
 
         self_num = self.numerator / self.denominator
-        other_num = other.numerator / other.denominator
+        other_num = otherfraction.numerator / otherfraction.denominator
         return self_num > other_num
 
-    def __float__(self):
+    def __float__(self) -> float:
         """
         Converts the fraction to a float.
 
