@@ -1,6 +1,7 @@
 #!/bin/python
 
 import argparse
+from ast import arg
 from os.path import join
 import re
 import pandas as pd
@@ -78,6 +79,11 @@ if __name__ == "__main__":
     if args.m:
         join_col = args.m
 
+    if args.verbose:
+        print(f"csv-Datei mit den Noten: {args.n}")
+        print(f"csv-Datei mit den Schülerdaten: {args.n}")
+        print(f"Name der Spalte, die zu verknüpfen ist: {join_col}")
+
     df_grades = pd.read_csv(args.n, sep=";").astype(str)
     df_grades.set_index(join_col, inplace=True)
     if args.f:
@@ -89,4 +95,6 @@ if __name__ == "__main__":
 
     df_joined = df_students.join(df_grades)
 
+    if not args.quiet:
+        print(f"Output-Datei: {args.outfile}\n")
     write_output(args.outfile)
