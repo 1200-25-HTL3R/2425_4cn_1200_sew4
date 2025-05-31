@@ -58,6 +58,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    df_grades = pd.read_csv(args.n, sep=";")
-    print(df_grades)
-    df_students = read_xml(args.s)
+    df_grades = pd.read_csv(args.n, sep=";").astype(str)
+    df_grades.set_index("Nummer", inplace=True)
+    df_students = read_xml(args.s).astype(str)
+    df_students.set_index("Nummer", inplace=True)
+
+    df_joined = df_grades.join(df_students, how="outer", on="Nummer")
+    print(df_joined)
