@@ -4,6 +4,7 @@ import argparse
 from os.path import join
 import re
 import pandas as pd
+from pandas.core.base import NoNewAttributesMixin
 
 __author__ = "Benedikt Theuretzbachner"
 
@@ -65,6 +66,10 @@ def filter_df(filter: set):
             df_grades.drop(columns=[col], inplace=True)
 
 
+def write_output(filename: str) -> None:
+    df_joined.to_csv(filename)
+
+
 if __name__ == "__main__":
     add_args()
 
@@ -84,4 +89,4 @@ if __name__ == "__main__":
 
     df_joined = df_students.join(df_grades)
 
-    print(df_joined)
+    write_output(args.outfile)
