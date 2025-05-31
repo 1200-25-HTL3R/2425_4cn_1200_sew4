@@ -14,8 +14,8 @@ parser = argparse.ArgumentParser(
 def add_args() -> None:
     parser.add_argument("outfile", help="Ausgabedatei (z.B. result.csv)")
 
-    parser.add_argument("-n", help="csv-Datei mit den Noten")
-    parser.add_argument("-s", help="xml-Datei mit den Schülerdaten")
+    parser.add_argument("-n", required=True, help="csv-Datei mit den Noten")
+    parser.add_argument("-s", required=True, help="xml-Datei mit den Schülerdaten")
     parser.add_argument(
         "-m", help="Name der Spalte, die zu verknüpfen ist (default = Nummer)"
     )
@@ -44,7 +44,6 @@ def read_xml(filename: str) -> pd.DataFrame:
         student_data = map(lambda t: t[1], re.findall(student_data_pattern, s))
         result.append(student_data)
 
-    print(result)
     df = pd.DataFrame(
         result,
         columns=["Nummer", "Anrede", "Vorname", "Nachname", "Geburtsdatum"],
@@ -57,6 +56,8 @@ def read_xml(filename: str) -> pd.DataFrame:
 if __name__ == "__main__":
     add_args()
 
-    parser.parse_args()
+    args = parser.parse_args()
 
-    print(read_xml("schueler.xml"))
+    df_grades = pd.read_csv(args.n, sep=";")
+    print(df_grades)
+    df_students = read_xml(args.s)
