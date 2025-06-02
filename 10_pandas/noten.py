@@ -1,7 +1,9 @@
 #!/bin/python
 
 import argparse
+import os
 import re
+import sys
 import pandas as pd
 
 __author__ = "Benedikt Theuretzbachner"
@@ -35,6 +37,17 @@ def add_args() -> None:
     output.add_argument("-q", "--quiet", action="store_true", help="keine Textausgabe")
 
 
+def check_file(filename: str) -> None:
+    """
+    Check if a file exists.
+
+    :param filename: Path to file
+    """
+    if not os.path.exists(filename):
+        print(f"{os.strerror(2)}: {filename}\n", file=sys.stderr)
+        exit(2)
+
+
 def read_xml(filename: str) -> pd.DataFrame:
     """
     Parse xml file with student data
@@ -57,7 +70,7 @@ def read_xml(filename: str) -> pd.DataFrame:
         r"<(Nummer|Anrede|Vorname|Nachname|Geburtsdatum)>(.*)</\1>"
     )
     for s in students:
-        student_data = map(lambda t: t[1], re.findall(student_data_pattern, s))
+        student_data = map(lambda match: match[1], re.findall(student_data_pattern, s))
         result.append(student_data)
 
     return pd.DataFrame(
@@ -94,6 +107,8 @@ if __name__ == "__main__":
     add_args()
 
     args: argparse.Namespace = parser.parse_args()
+    check_file(args.n)
+    check_file(args.s)
     join_col: str = "Nummer"
     if args.m:
         join_col = args.m
