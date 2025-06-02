@@ -1,11 +1,8 @@
 #!/bin/python
 
 import argparse
-from ast import arg
-from os.path import join
 import re
 import pandas as pd
-from pandas.core.base import NoNewAttributesMixin
 
 __author__ = "Benedikt Theuretzbachner"
 
@@ -20,6 +17,9 @@ df_joined = pd.DataFrame()
 
 
 def add_args() -> None:
+    """
+    Add arguments for argument parser
+    """
     parser.add_argument("outfile", help="Ausgabedatei (z.B. result.csv)")
 
     parser.add_argument("-n", required=True, help="csv-Datei mit den Noten")
@@ -37,6 +37,13 @@ def add_args() -> None:
 
 
 def read_xml(filename: str) -> pd.DataFrame:
+    """
+    Parse xml file with student data
+
+    :param filename: name of xml file
+
+    :return: dataframe with student data
+    """
     with open(filename) as f:
         content = f.read()
 
@@ -61,17 +68,30 @@ def read_xml(filename: str) -> pd.DataFrame:
     return df
 
 
-def filter_df(filter: set):
+def filter_df(filter: set) -> None:
+    """
+    Filter a DataFrame. Only keep columns in filter set.
+
+    :param filter: set with columns to keep
+    """
     for col in df_grades.columns:
         if col not in filter:
             df_grades.drop(columns=[col], inplace=True)
 
 
 def write_output(filename: str) -> None:
+    """
+    Write DataFrame to csv file.
+
+    :param filename: output filename
+    """
     df_joined.to_csv(filename)
 
 
 if __name__ == "__main__":
+    """
+    Main logic of this script. Parse Arguments and merge DataFrames.
+    """
     add_args()
 
     args = parser.parse_args()
