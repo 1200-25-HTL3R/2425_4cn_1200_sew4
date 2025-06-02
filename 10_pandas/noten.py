@@ -39,7 +39,7 @@ def add_args() -> None:
 
 def check_file(filename: str) -> None:
     """
-    Check if a file exists.
+    Check if file exists
 
     :param filename: Path to file
     """
