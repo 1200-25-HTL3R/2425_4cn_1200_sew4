@@ -9,7 +9,6 @@ __author__ = "Benedikt Theuretzbachner"
 parser: argparse.ArgumentParser = argparse.ArgumentParser(
     description="noten.py by Benedikt Theuretzbachner / HTL Rennweg"
 )
-args = None
 
 df_grades = pd.DataFrame()
 df_students = pd.DataFrame()
@@ -47,25 +46,25 @@ def read_xml(filename: str) -> pd.DataFrame:
     with open(filename) as f:
         content = f.read()
 
-    result = []
+    result: list = []
 
-    student_pattern = re.compile(r"<Schueler>.*?</Schueler>", flags=re.DOTALL)
-    students = re.findall(student_pattern, content)
+    student_pattern: re.Pattern = re.compile(
+        r"<Schueler>.*?</Schueler>", flags=re.DOTALL
+    )
+    students: list = re.findall(student_pattern, content)
 
-    student_data_pattern = re.compile(
+    student_data_pattern: re.Pattern = re.compile(
         r"<(Nummer|Anrede|Vorname|Nachname|Geburtsdatum)>(.*)</\1>"
     )
     for s in students:
         student_data = map(lambda t: t[1], re.findall(student_data_pattern, s))
         result.append(student_data)
 
-    df = pd.DataFrame(
+    return pd.DataFrame(
         result,
         columns=["Nummer", "Anrede", "Vorname", "Nachname", "Geburtsdatum"],
         dtype=str,
     )
-
-    return df
 
 
 def filter_df(filter: set) -> None:
@@ -94,8 +93,8 @@ if __name__ == "__main__":
     """
     add_args()
 
-    args = parser.parse_args()
-    join_col = "Nummer"
+    args: argparse.Namespace = parser.parse_args()
+    join_col: str = "Nummer"
     if args.m:
         join_col = args.m
 
